@@ -35,7 +35,7 @@ def login(request):
             user = authenticate(username = username , password = password)
             if user is not None:
                 loginUser(request , user)
-                return redirect('home')
+                return redirect('taska')
         else:
             context = {
                 "form" : form
@@ -75,7 +75,7 @@ def AddTask(request):
             todo.user = user
             todo.save()
             print(todo)
-            return redirect("home")
+            return redirect("tasks")
         else: 
             return render(request , 'index.html' , context={'form' : form})
 
@@ -83,13 +83,13 @@ def AddTask(request):
 def DeleteTask(request , id ):
     print(id)
     Todo.objects.get(pk = id).delete()
-    return redirect('home')
+    return redirect('tasks')
 
 def ChangeTask(request , id  , status):
     todo = Todo.objects.get(pk = id)
     todo.status = status
     todo.save()
-    return redirect('home')
+    return redirect('tasks')
 
 
 def signout(request):
