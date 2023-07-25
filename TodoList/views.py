@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate , login as loginUser , logout
-from app.forms import TODOForm
-from app.models import TODO
+from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
+from TodoList.forms import TodoForm
+from TodoList.models import Todo
 from django.contrib.auth.decorators import login_required
 
 
@@ -12,14 +13,13 @@ def index(request):
 
 @login_required(login_url='login')
 def tasks(request):
-    if request.user.is_authenticated:
+  if request.user.is_authenticated:
         user = request.user
-        form = TODOForm()
-        todos = TODO.objects.filter(user = user).order_by('priority')
-        return render(request , 'tasks.html' , context={'form' : form , 'todos' : todos})
+        form = TodoForm()
+        todos = Todo.objects.filter(user = user).order_by('priority')
+        return render(request , 'tasks.html' , context={'form' : form , 'todos' : todos}) 
 
 def login(request):
-    def login(request):
     if request.method == 'GET':
         form1 = AuthenticationForm()
         context = {
@@ -41,7 +41,6 @@ def login(request):
                 "form" : form
             }
             return render(request , 'login.html' , context=context )
-        
 
 def signup(request):
     if request.method == 'GET':
@@ -63,3 +62,36 @@ def signup(request):
                 return redirect('login')
         else:
             return render(request , 'signup.html' , context=context)
+        
+@login_required(login_url='login')
+def AddTask(request):
+    if request.user.is_authenticated:
+        user = request.user
+        print(user)
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            todo = form.save(commit=False)
+            todo.user = user
+            todo.save()
+            print(todo)
+            return redirect("home")
+        else: 
+            return render(request , 'index.html' , context={'form' : form})
+
+
+def DeleteTask(request , id ):
+    print(id)
+    Todo.objects.get(pk = id).delete()
+    return redirect('home')
+
+def ChangeTask(request , id  , status):
+    todo = Todo.objects.get(pk = id)
+    todo.status = status
+    todo.save()
+    return redirect('home')
+
+
+def signout(request):
+    logout(request)
+    return redirect('login')

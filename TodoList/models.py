@@ -1,6 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-cclass TODO(models.Model):
+class Todo(models.Model):
     status_choices = [
     ('C', 'COMPLETED'),
     ('P', 'PENDING'),
@@ -15,7 +16,7 @@ cclass TODO(models.Model):
     ('7', '7️⃣'),
     ('8', '8️⃣'),
     ('9', '9️⃣'),
-    ('10', '🔟'),
+    ('10','🔟'),
     ]
     title = models.CharField(max_length=50)
     status = models.CharField(max_length=2 , choices=status_choices)
