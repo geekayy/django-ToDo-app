@@ -35,7 +35,7 @@ def login(request):
             user = authenticate(username = username , password = password)
             if user is not None:
                 loginUser(request , user)
-                return redirect('taska')
+                return redirect('tasks')
         else:
             context = {
                 "form" : form
