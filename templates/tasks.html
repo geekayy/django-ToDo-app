@@ -54,16 +54,10 @@
                   <tr>
                     <td>{{forloop.counter}}</td>
                     <td>{{todo.title}}</td>
-                    <td>
-                      {% if todo.status == 'C'%}
-                      ✅
-                      {%else%}
-                      🕒
-                      {%endif%}
-                    </td>
+                    <td>{{todo.status}}</td>
                     <td>{{todo.priority}}</td>
                     <td>
-                      <a href="/delete-todo/{{todo.id}}" title="Delete" class="">🗑️</a>
+                      <a href="/DeleteTask/{{todo.id}}" title="Delete" class="">🗑️</a>
                       {% if todo.status == 'P'%}
                       <a href="/change-status/{{todo.id}}/C" title="Mark Completed" class="">✅</a>
                       {%else%}
